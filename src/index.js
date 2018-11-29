@@ -16,6 +16,7 @@ const nameBit = Symbol.for("nameBit");
 const descBit = Symbol.for("descBit");
 const argBit = Symbol.for("argBit");
 const runBit = Symbol.for("runBit");
+const rawArgsBit = Symbol.for("rawArgs");
 const __current_task = Symbol.for("__current_task");
 const __tasks = Symbol.for("__tasks");
 
@@ -56,6 +57,9 @@ global.task = (defTaskFn) => {
             case runBit:
                 t.run = bit.runFn;
                 break;
+            case rawArgsBit:
+                t.raw_args = true;
+                break;
             default:
                 console.error(bit);
                 throw new Error(`Unknown bit type in task pipeline !\n${JSON.stringify(bit, null, 3)}`);
@@ -82,6 +86,7 @@ global.task = (defTaskFn) => {
 global.name = (name) => global.task[__current_task].pipeline.push({_bit: nameBit, name});
 global.desc = (desc) => global.task[__current_task].pipeline.push({_bit: descBit, desc});
 global.arg = (arg, opts) => global.task[__current_task].pipeline.push({_bit: argBit, arg, opts});
+global.raw_args = (arg, opts) => global.task[__current_task].pipeline.push({_bit: rawArgsBit});
 global.run = (runFn) => global.task[__current_task].pipeline.push({_bit: runBit, runFn});
 global.invoke = (taskName) => {
     const t = global.task[__tasks][taskName];
@@ -91,10 +96,15 @@ global.invoke = (taskName) => {
 
 require("../suru.js");
 
-const args = argParser.parseArgs();
+const args = argParser.parseArgs(process.argv.slice(2, 3));
+const rTask = global.task[__tasks][args.run_task];
 
-const runTask = global.invoke(args.run_task)
+if(rTask) {
+    const raw_args = process.argv.slice(2);
 
-if(runTask) {
-    runTask(args);
+    rTask.run(
+        rTask.raw_args
+        ? raw_args.slice(1)
+        : argParser.parseArgs(raw_args)
+    );
 }

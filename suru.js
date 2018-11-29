@@ -37,3 +37,14 @@ task(() => {
       });
   });
 });
+
+task(() => {
+  name("docker")
+  desc("run docker")
+
+  raw_args();
+
+  run((args) => {
+    console.log(args);
+  });
+});
