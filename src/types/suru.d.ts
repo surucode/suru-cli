@@ -1,6 +1,6 @@
 declare namespace NodeJS {
   export interface Global {
-    suru: Suru.Suru;
+    suru: Suru.DSL;
 
     task(defTaskFn: Function): Function;
     name(name: string): void;

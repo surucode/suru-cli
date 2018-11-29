@@ -9,6 +9,77 @@ var Suru;
     }
     Suru.ArgConfig = ArgConfig;
 })(Suru || (Suru = {}));
+var Suru;
+(function (Suru) {
+    class SuruBit {
+    }
+    Suru.SuruBit = SuruBit;
+})(Suru || (Suru = {}));
+///<reference path="./SuruBit.ts" />
+var Suru;
+///<reference path="./SuruBit.ts" />
+(function (Suru) {
+    class NameBit extends Suru.SuruBit {
+        constructor(name) {
+            super();
+            this.name = name;
+        }
+    }
+    Suru.NameBit = NameBit;
+})(Suru || (Suru = {}));
+///<reference path="./SuruBit.ts" />
+var Suru;
+///<reference path="./SuruBit.ts" />
+(function (Suru) {
+    class DescBit extends Suru.SuruBit {
+        constructor(desc) {
+            super();
+            this.desc = desc;
+        }
+    }
+    Suru.DescBit = DescBit;
+})(Suru || (Suru = {}));
+///<reference path="./SuruBit.ts" />
+var Suru;
+///<reference path="./SuruBit.ts" />
+(function (Suru) {
+    class ArgBit extends Suru.SuruBit {
+        constructor(argConfig) {
+            super();
+            this.argConfig = argConfig;
+        }
+    }
+    Suru.ArgBit = ArgBit;
+})(Suru || (Suru = {}));
+///<reference path="./SuruBit.ts" />
+var Suru;
+///<reference path="./SuruBit.ts" />
+(function (Suru) {
+    class OptsBit extends Suru.SuruBit {
+        constructor(options) {
+            super();
+            this.options = options;
+        }
+    }
+    Suru.OptsBit = OptsBit;
+})(Suru || (Suru = {}));
+///<reference path="./SuruBit.ts" />
+var Suru;
+///<reference path="./SuruBit.ts" />
+(function (Suru) {
+    class RunBit extends Suru.SuruBit {
+        constructor(runFn) {
+            super();
+            this.runFn = runFn;
+        }
+    }
+    Suru.RunBit = RunBit;
+})(Suru || (Suru = {}));
+///<reference path="./SuruBits/NameBit.ts" />
+///<reference path="./SuruBits/DescBit.ts" />
+///<reference path="./SuruBits/ArgBit.ts" />
+///<reference path="./SuruBits/OptsBit.ts" />
+///<reference path="./SuruBits/RunBit.ts" />
 const ArgumentParser = require("argparse").ArgumentParser;
 const argParser = new ArgumentParser({
     version: "0.0.1",
@@ -21,37 +92,37 @@ const tasksArgsParsers = argParser.addSubparsers({
 const __current_task = Symbol("__current_task");
 const __tasks = Symbol("__tasks");
 var Suru;
-(function (Suru_1) {
+(function (Suru) {
     var _a, _b;
-    class Suru {
+    class DSL {
         constructor() {
             this[_a] = {};
             this[_b] = null;
         }
         task(defTaskFn) {
-            const t = new Suru_1.Task();
+            const t = new Suru.Task();
             const previousTask = this[__current_task];
             this[__current_task] = t;
             defTaskFn();
             this[__current_task] = previousTask;
             const args = [];
             t.pipeline.forEach((bit) => {
-                if (!(bit instanceof Suru_1.SuruBit)) {
+                if (!(bit instanceof Suru.SuruBit)) {
                     throw new Error(`Unknown element in task pipeline !\n${JSON.stringify(bit, null, 3)}`);
                 }
-                if (bit instanceof Suru_1.NameBit) {
+                if (bit instanceof Suru.NameBit) {
                     t.name = bit.name;
                 }
-                else if (bit instanceof Suru_1.DescBit) {
+                else if (bit instanceof Suru.DescBit) {
                     t.desc = bit.desc;
                 }
-                else if (bit instanceof Suru_1.ArgBit) {
+                else if (bit instanceof Suru.ArgBit) {
                     args.push(bit.argConfig);
                 }
-                else if (bit instanceof Suru_1.RunBit) {
+                else if (bit instanceof Suru.RunBit) {
                     t.run = bit.runFn;
                 }
-                else if (bit instanceof Suru_1.OptsBit) {
+                else if (bit instanceof Suru.OptsBit) {
                     t.options = Object.assign({}, t.options, bit.options);
                 }
                 else {
@@ -71,40 +142,40 @@ var Suru;
             return t.run;
         }
         assertDefiningTask() {
-            if (!(this[__current_task] instanceof Suru_1.Task)) {
+            if (!(this[__current_task] instanceof Suru.Task)) {
                 throw new Error(`Cannot call ${this.assertDefiningTask.caller.name}. Task bits functions can only be called when defining a task.`);
             }
         }
         name(name) {
             this.assertDefiningTask();
-            this[__current_task].pipeline.push(new Suru_1.NameBit(name));
+            this[__current_task].pipeline.push(new Suru.NameBit(name));
         }
         desc(desc) {
             this.assertDefiningTask();
-            this[__current_task].pipeline.push(new Suru_1.DescBit(desc));
+            this[__current_task].pipeline.push(new Suru.DescBit(desc));
         }
         arg(arg, opts) {
             this.assertDefiningTask();
-            this[__current_task].pipeline.push(new Suru_1.ArgBit(new Suru_1.ArgConfig(arg, opts)));
+            this[__current_task].pipeline.push(new Suru.ArgBit(new Suru.ArgConfig(arg, opts)));
         }
         opts(opts) {
             this.assertDefiningTask();
-            this[__current_task].pipeline.push(new Suru_1.OptsBit(opts));
+            this[__current_task].pipeline.push(new Suru.OptsBit(opts));
         }
         run(runFn) {
             this.assertDefiningTask();
-            this[__current_task].pipeline.push(new Suru_1.RunBit(runFn));
+            this[__current_task].pipeline.push(new Suru.RunBit(runFn));
         }
         invoke(taskName) {
             const t = this[__tasks][taskName];
-            if (!(t instanceof Suru_1.Task)) {
+            if (!(t instanceof Suru.Task)) {
                 throw new Error(`Cannot find task named ${taskName}`);
             }
             return t.run;
         }
         static inject() {
             if (!("suru" in global)) {
-                const shimasu = new Suru();
+                const shimasu = new DSL();
                 Object.defineProperties(global, {
                     suru: { get: () => shimasu },
                     task: { get: () => shimasu.task.bind(shimasu) },
@@ -119,13 +190,7 @@ var Suru;
         }
     }
     _a = __tasks, _b = __current_task;
-    Suru_1.Suru = Suru;
-})(Suru || (Suru = {}));
-var Suru;
-(function (Suru) {
-    class SuruBit {
-    }
-    Suru.SuruBit = SuruBit;
+    Suru.DSL = DSL;
 })(Suru || (Suru = {}));
 var Suru;
 (function (Suru) {
@@ -145,7 +210,8 @@ var Suru;
     }
     Suru.Task = Task;
 })(Suru || (Suru = {}));
-Suru.Suru.inject();
+///<reference path="./DSL.ts" />
+Suru.DSL.inject();
 require("../suru.js");
 const args = argParser.parseArgs(process.argv.slice(2, 3));
 const rTask = global.suru[__tasks][args.run_task];
@@ -155,54 +221,4 @@ if (rTask) {
         : argParser.parseArgs(process.argv.slice(2));
     rTask.run(args);
 }
-var Suru;
-(function (Suru) {
-    class ArgBit extends Suru.SuruBit {
-        constructor(argConfig) {
-            super();
-            this.argConfig = argConfig;
-        }
-    }
-    Suru.ArgBit = ArgBit;
-})(Suru || (Suru = {}));
-var Suru;
-(function (Suru) {
-    class DescBit extends Suru.SuruBit {
-        constructor(desc) {
-            super();
-            this.desc = desc;
-        }
-    }
-    Suru.DescBit = DescBit;
-})(Suru || (Suru = {}));
-var Suru;
-(function (Suru) {
-    class NameBit extends Suru.SuruBit {
-        constructor(name) {
-            super();
-            this.name = name;
-        }
-    }
-    Suru.NameBit = NameBit;
-})(Suru || (Suru = {}));
-var Suru;
-(function (Suru) {
-    class OptsBit extends Suru.SuruBit {
-        constructor(options) {
-            super();
-            this.options = options;
-        }
-    }
-    Suru.OptsBit = OptsBit;
-})(Suru || (Suru = {}));
-var Suru;
-(function (Suru) {
-    class RunBit extends Suru.SuruBit {
-        constructor(runFn) {
-            super();
-            this.runFn = runFn;
-        }
-    }
-    Suru.RunBit = RunBit;
-})(Suru || (Suru = {}));
 //# sourceMappingURL=suru.js.map

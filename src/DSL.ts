@@ -1,3 +1,9 @@
+///<reference path="./SuruBits/NameBit.ts" />
+///<reference path="./SuruBits/DescBit.ts" />
+///<reference path="./SuruBits/ArgBit.ts" />
+///<reference path="./SuruBits/OptsBit.ts" />
+///<reference path="./SuruBits/RunBit.ts" />
+
 const ArgumentParser = require("argparse").ArgumentParser;
 
 const argParser = new ArgumentParser({
@@ -14,7 +20,7 @@ const __current_task = Symbol("__current_task");
 const __tasks = Symbol("__tasks");
 
 namespace Suru {
-  export class Suru {
+  export class DSL {
     private [__tasks]: { [name: string]: Task } = {};
     private [__current_task]: Task | null = null;
 
@@ -129,7 +135,7 @@ namespace Suru {
 
     public static inject() {
       if (!("suru" in global)) {
-        const shimasu = new Suru();
+        const shimasu = new DSL();
 
         Object.defineProperties(global, {
           suru: { get: () => shimasu },

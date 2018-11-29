@@ -1,4 +1,6 @@
-Suru.Suru.inject();
+///<reference path="./DSL.ts" />
+
+Suru.DSL.inject();
 
 require("../suru.js");
 
