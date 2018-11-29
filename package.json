@@ -10,5 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "argparse": "^1.0.10"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.10",
+    "typescript": "^3.2.1"
   }
 }
