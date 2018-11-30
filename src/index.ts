@@ -1,16 +1,23 @@
-///<reference path="./DSL.ts" />
+import { Suru } from "./Suru";
+import { ArgumentParser } from "argparse";
+import * as fs from "fs";
 
-Suru.DSL.inject();
+Suru.inject();
+require(fs.realpathSync(process.cwd() + "/suru.js"));
 
-require("../suru.js");
+const argParser = new ArgumentParser({
+  version: "0.0.1",
+  description: "する"
+});
+
+const tasksArgsParsers = argParser.addSubparsers({
+  title: "tasks",
+  dest: "run_task"
+});
 
 const args = argParser.parseArgs(process.argv.slice(2, 3));
-const rTask = global.suru[__tasks][args.run_task];
+const rTask = global.suru.getTask(args.run_task);
 
 if (rTask) {
-  const args = rTask.options.raw_args
-    ? { args: process.argv.slice(3) }
-    : argParser.parseArgs(process.argv.slice(2));
-
-  rTask.run(args);
+  rTask.run(process.argv.slice(3));
 }

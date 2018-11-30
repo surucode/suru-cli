@@ -1,9 +1,9 @@
-///<reference path="./SuruBit.ts" />
+import { SuruBit } from "./SuruBit";
+import { TaskOptions } from "../TaskOptions";
 
-namespace Suru {
+
   export class OptsBit extends SuruBit {
     constructor(public options: TaskOptions) {
       super();
     }
   }
-}

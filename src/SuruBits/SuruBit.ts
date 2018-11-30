@@ -1,3 +1,1 @@
-namespace Suru {
-  export class SuruBit {}
-}
+export  class SuruBit {}

@@ -1,9 +1,7 @@
-///<reference path="./SuruBit.ts" />
+import {SuruBit} from "./SuruBit"
 
-namespace Suru {
   export class RunBit extends SuruBit {
     constructor(public runFn: Function) {
       super();
     }
   }
-}

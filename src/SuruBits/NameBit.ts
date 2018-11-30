@@ -1,9 +1,7 @@
-///<reference path="./SuruBit.ts" />
+import {SuruBit } from "./SuruBit"
 
-namespace Suru {
   export class NameBit extends SuruBit {
     constructor(public name: string) {
       super();
     }
   }
-}

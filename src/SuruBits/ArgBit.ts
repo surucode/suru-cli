@@ -1,9 +1,8 @@
-///<reference path="./SuruBit.ts" />
+import {SuruBit} from "./SuruBit"
+import {ArgConfig} from "../ArgConfig"
 
-namespace Suru {
-  export class ArgBit extends SuruBit {
+export class ArgBit extends SuruBit {
     constructor(public argConfig: ArgConfig) {
       super();
     }
-  }
 }

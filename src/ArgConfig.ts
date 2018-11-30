@@ -1,5 +1,6 @@
-namespace Suru {
-  export class ArgConfig {
+import { ArgumentParserOptions } from "argparse";
+
+ export class ArgConfig {
     public arg: string | Array<string>;
     public options: Object;
 
@@ -8,4 +9,3 @@ namespace Suru {
       this.options = options;
     }
   }
-}
