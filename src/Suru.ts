@@ -64,7 +64,7 @@ export class Suru {
 
     if (!t.argParser) {
       t.argParser = new ArgumentParser({
-        prog: `する ${t.name}`,
+        prog: `suru ${t.name}`,
         description: t.desc
       });
     }
@@ -75,7 +75,7 @@ export class Suru {
 
     this[__tasks][t.name] = t;
 
-    return t.run;
+    return t.runFn.bind(t);
   }
 
   private assertDefiningTask() {
@@ -123,7 +123,7 @@ export class Suru {
       throw new Error(`Cannot find task named ${taskName}`);
     }
 
-    return t.run;
+    return t.runFn.bind(t);
   }
 
   public static inject() {

@@ -3,17 +3,17 @@ import { ArgumentParser } from "argparse";
 import * as fs from "fs";
 
 Suru.inject();
-require(fs.realpathSync(process.cwd() + "/suru.js"));
+const suruPath = fs.realpathSync(process.cwd() + "/suru.js");
+console.log("Loaded tasks from: " + suruPath);
+__non_webpack_require__(suruPath);
 
 const argParser = new ArgumentParser({
+  prog: `suru`,
   version: "0.0.1",
   description: "する"
 });
 
-const tasksArgsParsers = argParser.addSubparsers({
-  title: "tasks",
-  dest: "run_task"
-});
+const tasksArgsParsers = argParser.addArgument("run_task");
 
 const args = argParser.parseArgs(process.argv.slice(2, 3));
 const rTask = global.suru.getTask(args.run_task);
