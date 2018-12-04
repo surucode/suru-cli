@@ -11,11 +11,11 @@ export class Task {
   public pipeline: Array<SuruBit> = [];
   public runFn: Function = () => {};
   public options: TaskOptions = new TaskOptions();
-  public argParser?: ArgumentParser;
+  public argParser: ArgumentParser = new ArgumentParser();
 
   public run(args : Array<string>) {
     this.runFn(
-      this.options.raw_args ? { args } : this.argParser!.parseArgs(args)
+      this.options.raw_args ? { args } : this.argParser.parseArgs(args)
     );
   }
 }

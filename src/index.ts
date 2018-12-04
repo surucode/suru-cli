@@ -1,8 +1,21 @@
 import { Suru } from "./Suru";
+
+import { ArgBit } from "./SuruBits/ArgBit";
+import { DescBit } from "./SuruBits/DescBit";
+import { NameBit } from "./SuruBits/NameBit";
+import { OptsBit } from "./SuruBits/OptsBit";
+import { RunBit } from "./SuruBits/RunBit";
+
 import { ArgumentParser } from "argparse";
 import * as fs from "fs";
 
-Suru.inject();
+Suru.register();
+ArgBit.register();
+DescBit.register();
+NameBit.register();
+OptsBit.register();
+RunBit.register();
+
 const suruPath = fs.realpathSync(process.cwd() + "/suru.js");
 console.log("Loaded tasks from: " + suruPath);
 __non_webpack_require__(suruPath);
