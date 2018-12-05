@@ -1,5 +1,6 @@
-import { ArgumentParser } from "argparse";
 import { SuruBit } from "core";
+
+import { ArgumentParser } from "argparse";
 import { TaskOptions } from "./TaskOptions";
 
 export class Task {
@@ -12,7 +13,7 @@ export class Task {
 
   public run(args: string[]) {
     this.runFn(
-      this.options.raw_args ? { args } : this.argParser.parseArgs(args),
+      this.options.raw_args ? { args } : this.argParser.parseArgs(args)
     );
   }
 }

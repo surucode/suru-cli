@@ -1,7 +1,6 @@
 import { Suru, SuruBit, Task } from "core";
 
 export class DescBit extends SuruBit {
-
   public static register() {
     Suru.registerBit("desc", (desc: string) => new DescBit(desc));
   }
@@ -12,5 +11,13 @@ export class DescBit extends SuruBit {
   public buildTask(t: Task) {
     t.desc = this.desc;
     (t.argParser as any).desc = t.desc;
+  }
+}
+
+declare global {
+  namespace NodeJS {
+    export interface Global {
+      desc(desc: string): void;
+    }
   }
 }

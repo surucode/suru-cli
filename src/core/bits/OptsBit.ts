@@ -12,7 +12,14 @@ export class OptsBit extends SuruBit {
   public buildTask(t: Task) {
     t.options = {
       ...t.options,
-      ...this.options,
+      ...this.options
     };
+  }
+}
+declare global {
+  namespace NodeJS {
+    export interface Global {
+      opts(opts: TaskOptions): void;
+    }
   }
 }

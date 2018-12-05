@@ -1,7 +1,6 @@
 import { Suru, SuruBit, Task } from "core";
 
 export class RunBit extends SuruBit {
-
   public static register() {
     Suru.registerBit("run", (runFn: Function) => new RunBit(runFn));
   }
@@ -11,5 +10,13 @@ export class RunBit extends SuruBit {
 
   public buildTask(t: Task) {
     t.runFn = this.runFn;
+  }
+}
+
+declare global {
+  namespace NodeJS {
+    export interface Global {
+      run(runFn: Function): void;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Suru } from "./Suru";
+import { Suru } from "./Suru/Suru";
 import { SuruBit } from "./SuruBit";
 import { Task } from "./Task";
 
