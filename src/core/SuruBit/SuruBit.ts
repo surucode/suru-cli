@@ -1,4 +1,4 @@
-import { Task } from "../Task";
+import { Task } from "core";
 
 export abstract class SuruBit {
   public buildTask(t: Task) {

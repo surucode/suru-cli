@@ -1,8 +1,11 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/index.ts",
-  mode: "production",
+  entry: path.join(__dirname, "/src/index.ts"),
+  output: {
+    filename: "suru.js",
+    path: path.resolve(__dirname, "dist")
+  },
   module: {
     rules: [
       {
@@ -12,12 +15,11 @@ module.exports = {
       }
     ]
   },
-  target: "node",
   resolve: {
+    modules: [path.resolve(__dirname, "src"), "node_modules"],
     extensions: [".tsx", ".ts", ".js"]
   },
-  output: {
-    filename: "suru.js",
-    path: path.resolve(__dirname, "dist")
-  }
+  plugins: [],
+  mode: "production",
+  target: "node"
 };

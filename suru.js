@@ -29,12 +29,12 @@ task(() => {
   run(() => {
     // On peut appeler une autre tache depuis sa référence
     hello({
-      who: "michel"
+      who: "michel",
     });
 
     // Ici on voit qu'on peut aussi l'appeler grace à son "name"
     invoke("hello")({
-      who: "michou"
+      who: "michou",
     });
   });
 });
@@ -44,7 +44,7 @@ task(() => {
   desc("run docker");
 
   opts({
-    raw_args: true
+    raw_args: true,
   });
 
   run(({ args }) => {

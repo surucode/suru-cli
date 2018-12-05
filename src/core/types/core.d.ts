@@ -1,4 +1,4 @@
-import { Suru } from "../Suru"
+import { Suru } from "core"
 
 declare global {
    namespace NodeJS {

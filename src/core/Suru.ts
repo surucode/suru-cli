@@ -1,10 +1,27 @@
-import { SuruBit } from "./SuruBits/SuruBit";
-import { Task } from "./Task";
+import { SuruBit, Task } from "core";
 
 const __current_task = Symbol("__current_task");
 const __tasks = Symbol("__tasks");
 
 export class Suru {
+
+  public static registerBit(name: string, bitBuilder: Function) {
+    Suru.register().registerBit(name, bitBuilder);
+  }
+
+  public static register() {
+    if (!("suru" in global)) {
+      const shimasu = new Suru();
+
+      Object.defineProperties(global, {
+        suru: { get: () => shimasu },
+        task: { get: () => shimasu.task.bind(shimasu) },
+        invoke: { get: () => shimasu.invoke.bind(shimasu) },
+      });
+    }
+
+    return global.suru;
+  }
   private [__tasks]: { [name: string]: Task } = {};
   private [__current_task]: Task | null = null;
 
@@ -21,7 +38,7 @@ export class Suru {
     t.pipeline.forEach((bit: SuruBit) => {
       if (!(bit instanceof SuruBit)) {
         throw new Error(
-          `Unknown element in task pipeline !\n${JSON.stringify(bit, null, 3)}`
+          `Unknown element in task pipeline !\n${JSON.stringify(bit, null, 3)}`,
         );
       }
 
@@ -41,16 +58,6 @@ export class Suru {
     return t.runFn.bind(t);
   }
 
-  private assertDefiningTask() {
-    if (!(this[__current_task] instanceof Task)) {
-      throw new Error(
-        `Cannot call ${
-          this.assertDefiningTask.caller.name
-        }. Task bits functions can only be called when defining a task.`
-      );
-    }
-  }
-
   public getTask(taskName: string): Task {
     return this[__tasks][taskName];
   }
@@ -66,31 +73,23 @@ export class Suru {
   }
 
   public registerBit(name: string, bitBuilder: Function) {
-    if(!(name in global)) {
+    if (!(name in global)) {
       Object.defineProperty(global, name, {
         get: () => (...args: any[]) => {
           this.assertDefiningTask();
           this[__current_task]!.pipeline.push(bitBuilder(...args));
-        }
+        },
       });
     }
   }
 
-  public static registerBit(name: string, bitBuilder: Function) {
-    Suru.register().registerBit(name, bitBuilder);
-  }
-
-  public static register() {
-    if (!("suru" in global)) {
-      const shimasu = new Suru();
-
-      Object.defineProperties(global, {
-        suru: { get: () => shimasu },
-        task: { get: () => shimasu.task.bind(shimasu) },
-        invoke: { get: () => shimasu.invoke.bind(shimasu) }
-      });
+  private assertDefiningTask() {
+    if (!(this[__current_task] instanceof Task)) {
+      throw new Error(
+        `Cannot call ${
+          this.assertDefiningTask.caller.name
+        }. Task bits functions can only be called when defining a task.`,
+      );
     }
-
-    return global.suru;
   }
 }
