@@ -1,5 +1,5 @@
 import { Suru } from "./Suru/Suru";
-import { SuruBit } from "./SuruBit";
+import { SuruBit } from "./SuruBit/SuruBit";
 import { Task } from "./Task";
 
 export {

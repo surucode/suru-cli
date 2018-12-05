@@ -43,11 +43,30 @@ task(() => {
   name("docker");
   desc("run docker");
 
-  opts({
-    raw_args: true,
-  });
-
-  run(({ args }) => {
+  run((args) => {
     console.log(args);
+  });
+});
+
+task(() => {
+  // On définie des metadata pour la tache
+  //
+  name("hello2");
+  desc("Say hello");
+  
+  arg(["-U", "--uppercase"], { action: "storeTrue" });
+  
+  // On définie les arguments possibles grace à
+  // https://github.com/nodeca/argparse
+  //
+  arg("who", { defaultValue: "world", nargs: "?" });
+
+  // On définie réellement ce qui va être fait dans la tache
+  //
+  run(args => {
+    const { who, uppercase } = args;
+    console.log();
+    console.log(`Hello ${uppercase ? who.toUpperCase() : who} !`);
+    console.log();
   });
 });

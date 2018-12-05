@@ -1,17 +1,15 @@
 import { Suru, SuruBit, Task } from "core";
 
-export class RunBit extends SuruBit {
-  public static register() {
-    Suru.registerBit("run", (runFn: Function) => new RunBit(runFn));
-  }
-  constructor(public runFn: Function) {
-    super();
-  }
+type TaskRunFn = (...args : any[]) => any;
 
-  public buildTask(t: Task) {
-    t.runFn = this.runFn;
-  }
-}
+export const RunBit : SuruBit = (runFn: TaskRunFn) => (t: Task) => {
+  const prevRun = (t.runFn || (() => {})).bind(t);
+
+  t.runFn = (...args : any[]) => {
+    prevRun(...args);
+    runFn(...args);
+  };
+};
 
 declare global {
   namespace NodeJS {

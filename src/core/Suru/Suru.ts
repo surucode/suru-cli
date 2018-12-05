@@ -1,4 +1,4 @@
-import { Task } from "core";
+import { Task, SuruBit } from "core";
 import { TaskBuilder } from "./TaskBuilder";
 
 import { __tasks, __current_task } from "core/private";
@@ -16,13 +16,13 @@ export class Suru {
   }
 
   public invoke(taskName: string): Function {
-    const t = this.getTask(taskName);
+    const task = this.getTask(taskName);
 
-    if (!(t instanceof Task)) {
-      throw new Error(`Cannot find task named ${taskName}`);
+    if (!(task instanceof Task)) {
+      throw new Error(`Cannot invoke task ! ${JSON.stringify(task, null, 3)}`);
     }
 
-    return t.runFn.bind(t);
+    return task.run.bind(task);
   }
 
   public static register() {
@@ -39,19 +39,17 @@ export class Suru {
     return global.suru;
   }
 
-  public registerBit(name: string, bitBuilder: Function) {
+  public registerBit(name: string, bit: SuruBit) {
     if (!(name in global)) {
       Object.defineProperty(global, name, {
         get: () => (...args: any[]) => {
           this.assertDefiningTask(name);
-          this[__current_task]!.pipeline.push(bitBuilder(...args));
+          bit(...args)(this[__current_task]);
         }
       });
     }
-  }
 
-  public static registerBit(name: string, bitBuilder: Function) {
-    Suru.register().registerBit(name, bitBuilder);
+    return this;
   }
 
   private assertDefiningTask(name: string) {

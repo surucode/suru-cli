@@ -11,16 +11,6 @@ export function TaskBuilder(taskDefFn: Function) {
 
   this[__current_task] = previousTask;
 
-  task.pipeline.forEach((bit: SuruBit) => {
-    if (!(bit instanceof SuruBit)) {
-      throw new Error(
-        `Unknown element in task pipeline !\n${JSON.stringify(bit, null, 3)}`
-      );
-    }
-
-    bit.buildTask(task);
-  });
-
   if (
     !task.name ||
     typeof task.name !== "string" ||
@@ -37,5 +27,5 @@ export function TaskBuilder(taskDefFn: Function) {
 
   this[__tasks][task.name] = task;
 
-  return task.runFn.bind(task);
+  return task.run.bind(task);
 }
