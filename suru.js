@@ -1,5 +1,3 @@
-const { spawnSync } = require("child_process");
-
 // avec stockage dans une variable pour reinvocation plus tard
 const hello = task(() => {
   // On définie des metadata pour la tache
@@ -31,22 +29,27 @@ task(() => {
   run(() => {
     // On peut appeler une autre tache depuis sa référence
     hello({
-      who: "michel",
+      who: "michel"
     });
 
     // Ici on voit qu'on peut aussi l'appeler grace à son "name"
     invoke("hello")({
-      who: "michou",
+      who: "michou"
     });
   });
 });
-
-const shell = (program, args, opts = { passArgs: true }) => run((runArgs) => spawnSync(program, args.concat(opts.passArgs ? runArgs : []), { cwd: __dirname, stdio: "inherit" }));
 
 task(() => {
   name("build");
   desc("build suru with suru");
 
-  shell("npx", ["webpack"]);
-  shell("vim", [], { passArgs: false });
+  shell("npx", "webpack", shell.args);
+  shell("vim");
+});
+
+task(() => {
+  name("echo");
+  desc("echo");
+
+  shell("echo", "here", "from", "code", "now shell:", shell.args, "shell finished");
 });

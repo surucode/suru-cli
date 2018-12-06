@@ -1,10 +1,12 @@
-import { SuruBit } from "core";
+import { SuruBit, Suru } from "core";
 import { ArgumentParser } from "argparse";
 import { TaskWithArgs } from "./TaskWithArgs";
 
-export const ArgBit: SuruBit = (arg: string | string[], opts: Object) => (t: TaskWithArgs) => {
+const ArgBit: SuruBit = (arg: string | string[], opts: Object) => (
+  t: TaskWithArgs
+) => {
   if (!t.argParser) {
-    if(!t.name || typeof t.name !== "string" || t.name.trim().length < 1) {
+    if (!t.name || typeof t.name !== "string" || t.name.trim().length < 1) {
       throw new Error("Task should have a name before calling ArgBit!");
     }
 
@@ -17,16 +19,24 @@ export const ArgBit: SuruBit = (arg: string | string[], opts: Object) => (t: Tas
     t.run = (...args: any[]) => {
       if (args.length === 1 && Array.isArray(args[0])) {
         const newArgs = t.argParser.parseArgs(args[0]);
-        originalRun(
-          newArgs
-        );
+        originalRun(newArgs);
       } else {
-        originalRun(
-        ...args
-        );
+        originalRun(...args);
       }
     };
   }
 
   t.argParser.addArgument(arg, opts);
 };
+
+ArgBit.register = () => void Suru.register().registerBit("arg", ArgBit);
+
+export { ArgBit };
+
+declare global {
+  namespace NodeJS {
+    export interface Global {
+      arg(arg: string | string[], opts: Object): void;
+    }
+  }
+}

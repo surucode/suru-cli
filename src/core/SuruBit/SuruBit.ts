@@ -1,3 +1,7 @@
 import { Task } from "core";
 
-export type SuruBit = (...args: any[]) => (t: Task) => void;
+type SuruBitFunc = (...args: any[]) => (t: Task) => void;
+
+export interface SuruBit extends SuruBitFunc {
+    register: () => void;
+}

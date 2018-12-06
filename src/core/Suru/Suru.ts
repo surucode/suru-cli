@@ -6,6 +6,9 @@ import { __tasks, __current_task } from "core/private";
 export class Suru {
   private [__tasks]: { [name: string]: Task } = {};
   private [__current_task]: Task | null = null;
+  public bits: {
+    [name: string]: ((...args: any[]) => void);
+  } = {};
 
   public task(defTaskFn: Function) {
     return TaskBuilder.call(this, defTaskFn);
@@ -40,14 +43,10 @@ export class Suru {
   }
 
   public registerBit(name: string, bit: SuruBit) {
-    if (!(name in global)) {
-      Object.defineProperty(global, name, {
-        get: () => (...args: any[]) => {
-          this.assertDefiningTask(name);
-          bit(...args)(this[__current_task]);
-        }
-      });
-    }
+    this.bits[name] = (...args: any[]) => {
+      this.assertDefiningTask(name);
+      void bit(...args)(this[__current_task]);
+    };
 
     return this;
   }

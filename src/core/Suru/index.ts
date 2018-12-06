@@ -1,1 +1,1 @@
-export {Suru} from "./Suru"
+export { Suru } from "./Suru"

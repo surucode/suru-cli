@@ -1,8 +1,11 @@
-import { SuruBit, Task } from "core";
+import { Suru, SuruBit, Task } from "core";
 
-export const DescBit : SuruBit = (desc: string) => (t: Task) => {
+const DescBit: SuruBit = (desc: string) => (t: Task) => {
   t.desc = desc;
-}
+};
+DescBit.register = () => void Suru.register().registerBit("desc", DescBit);
+
+export { DescBit };
 
 declare global {
   namespace NodeJS {

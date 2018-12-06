@@ -4,12 +4,36 @@ import { Suru, Task, SuruBit } from "core";
 export function TaskBuilder(taskDefFn: Function) {
   const task = new Task();
 
+  const defToRemove: string[] = [];
+  const previousDefs: { [name: string]: PropertyDescriptor } = {};
+
+  // hijack definitions
+  Object.keys(this.bits).forEach(name => {
+    const existingDef = Object.getOwnPropertyDescriptor(global, name);
+    if (existingDef) {
+      previousDefs[name] = existingDef;
+    } else {
+      defToRemove.push(name);
+    }
+
+    Object.defineProperty(global, name, {
+      get: () => this.bits[name],
+      configurable: true
+    });
+  });
+
   const previousTask: Task | null = this[__current_task];
   this[__current_task] = task;
 
   taskDefFn();
 
   this[__current_task] = previousTask;
+
+  // reset definitions
+  Object.keys(previousDefs).forEach(name => {
+    Object.defineProperty(global, name, previousDefs[name]);
+  });
+  defToRemove.forEach(name => delete (<any>global)[name]);
 
   if (
     !task.name ||
