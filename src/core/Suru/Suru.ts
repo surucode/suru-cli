@@ -10,7 +10,7 @@ export class Suru {
     [name: string]: ((...args: any[]) => void);
   } = {};
 
-  public task(defTaskFn: Function) {
+  public task(defTaskFn: Function): Function {
     return TaskBuilder.call(this, defTaskFn);
   }
 
@@ -28,35 +28,43 @@ export class Suru {
     return task.run.bind(task);
   }
 
-  public static register() {
+  public static register(): Suru {
     if (!("suru" in global)) {
       const shimasu = new Suru();
 
       Object.defineProperties(global, {
         suru: { get: () => shimasu },
         task: { get: () => shimasu.task.bind(shimasu) },
-        invoke: { get: () => shimasu.invoke.bind(shimasu) }
+        invoke: { get: () => shimasu.invoke.bind(shimasu) },
+        bit: { get: () => shimasu.bit.bind(shimasu) }
       });
     }
 
     return global.suru;
   }
 
-  public registerBit(name: string, bit: SuruBit) {
+  public registerBit(name: string, bit: SuruBit): Suru {
     this.bits[name] = (...args: any[]) => {
-      this.assertDefiningTask(name);
+      if (!(this[__current_task] instanceof Task)) {
+        throw new Error(
+          `Cannot call ${name}. Task bits functions can only be called when defining a task.`
+        );
+      }
       void bit(...args)(this[__current_task]);
     };
 
     return this;
   }
 
-  private assertDefiningTask(name: string) {
-    if (!(this[__current_task] instanceof Task)) {
-      throw new Error(
-        `Cannot call ${name}. Task bits functions can only be called when defining a task.`
-      );
-    }
+  public static registerBit(name: string, bit: SuruBit): Suru {
+    return Suru.register().registerBit(name, bit);
+  }
+
+  public bit(bit: string): Suru {
+    const req = __non_webpack_require__ || require;
+    req(req.resolve(`${bit}/register`) ? `${bit}/register` : bit);
+
+    return this;
   }
 }
 
@@ -65,6 +73,7 @@ declare global {
     export interface Global {
       suru: Suru;
 
+      bit(name: string): void;
       task(defTaskFn: Function): Function;
       invoke(taskName: string): Function;
     }

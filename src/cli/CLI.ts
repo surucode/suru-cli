@@ -1,21 +1,17 @@
 import { Suru } from "core";
 import { DescBit, NameBit, RunBit } from "core/bits";
 
-import { ShellBit } from "shellbit";
-import { ArgBit } from "argbit";
-
 import { ArgumentParser } from "argparse";
 import * as fs from "fs";
 
 export function CLI() {
+  console.log("loading suru");
+  
   // register Suru
-  Suru.register();
-  DescBit.register();
-  NameBit.register();
-  RunBit.register();
-
-  ArgBit.register();
-  ShellBit.register();
+  const shimasu = Suru.register();
+  shimasu.bit("core/bits");
+  shimasu.bit("shellbit");
+  shimasu.bit("argbit");
 
   const suruPath = fs.realpathSync(process.cwd() + "/suru.js");
   console.log("Loaded tasks from: " + suruPath);
@@ -34,6 +30,6 @@ export function CLI() {
   const rTask = global.suru.getTask(args.task);
 
   if (rTask) {
-    rTask.run(process.argv.slice(3));
+    rTask.run(...process.argv.slice(3));
   }
 }

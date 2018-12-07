@@ -51,5 +51,7 @@ task(() => {
   name("echo");
   desc("echo");
 
+  arg("toto", { optional: true });
+
   shell("echo", "here", "from", "code", "now shell:", shell.args, "shell finished");
 });

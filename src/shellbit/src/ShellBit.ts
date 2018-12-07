@@ -1,9 +1,15 @@
+import { cwd } from "process";
 import { spawnSync } from "child_process";
 import { SuruBit, Task, Suru } from "core";
 
-export const ShellBitArgs = Symbol("ShellBitArgs");
+type ShellBitArgs = Symbol;
 
-const ShellBit: SuruBit = (program: string, ...args: Array<string|Symbol>) => (t: Task) => {
+export const ShellBitArgs: ShellBitArgs = Symbol("ShellBitArgs");
+
+export const ShellBit: SuruBit = (
+  program: string,
+  ...args: Array<string | Symbol>
+) => (t: Task) => {
   const prevRun = (t.runFn || (() => {})).bind(t);
 
   t.runFn = (...runArgs: any[]) => {
@@ -15,7 +21,7 @@ const ShellBit: SuruBit = (program: string, ...args: Array<string|Symbol>) => (t
       shell_args_pos >= 0
         ? [
             ...args.slice(0, shell_args_pos),
-            ...runArgs[0],
+            ...runArgs,
             ...args.slice(shell_args_pos + 1)
           ]
         : args
@@ -26,27 +32,11 @@ const ShellBit: SuruBit = (program: string, ...args: Array<string|Symbol>) => (t
       shell_args_pos >= 0
         ? [
             ...args.slice(0, shell_args_pos),
-            ...runArgs[0],
+            ...runArgs,
             ...args.slice(shell_args_pos + 1)
           ]
         : args,
-      { cwd: __dirname, stdio: "inherit" }
+      { cwd: cwd(), stdio: "inherit" }
     );
   };
 };
-
-ShellBit.register = () => {
-  const suru = Suru.register();
-  suru.registerBit("shell", ShellBit);
-  (<any>suru.bits.shell).args = ShellBitArgs;
-};
-
-export { ShellBit };
-
-declare global {
-  namespace NodeJS {
-    export interface Global {
-      shell(program: string, ...args: Array<string | Symbol>): void;
-    }
-  }
-}
