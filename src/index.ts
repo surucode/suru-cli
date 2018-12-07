@@ -1,3 +1,1 @@
-import { CLI } from "cli";
-
-CLI();
+export { CLI } from "./CLI";
