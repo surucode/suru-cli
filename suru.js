@@ -8,8 +8,8 @@ const hello = task(() => {
   // On définie les arguments possibles grace à
   // https://github.com/nodeca/argparse
   //
-  arg(["-U", "--uppercase"], { action: "storeTrue" });
-  arg("who", { defaultValue: "world", nargs: "?" });
+  // arg(["-U", "--uppercase"], { action: "storeTrue" });
+  // arg("who", { defaultValue: "world", nargs: "?" });
 
   // On définie réellement ce qui va être fait dans la tache
   //
@@ -43,15 +43,15 @@ task(() => {
   name("build");
   desc("build suru with suru");
 
-  shell("npx", "webpack", shell.args);
-  shell("vim");
+  // shell("npx", "webpack", shell.args);
+  // shell("vim");
 });
 
 task(() => {
   name("echo");
   desc("echo");
 
-  arg("toto", { optional: true });
+  // arg("toto", { optional: true });
 
-  shell("echo", "here", "from", "code", "now shell:", shell.args, "shell finished");
+  // shell("echo", "here", "from", "code", "now shell:", shell.args, "shell finished");
 });

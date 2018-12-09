@@ -1,1 +1,5 @@
-export { CLI } from "./CLI";
+#!/usr/bin/env node
+
+import { CLI } from "./CLI";
+
+CLI();

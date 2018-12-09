@@ -1,22 +1,22 @@
-import { Suru } from "core";
-import { DescBit, NameBit, RunBit } from "core/bits";
-
+import { Suru } from "@surucode/suru-core";
 import { ArgumentParser } from "argparse";
-import * as fs from "fs";
+
+import { realpathSync } from "fs";
+import { cwd } from "process"
 
 export function CLI() {
   console.log("loading suru");
   
   // register Suru
   const shimasu = Suru.register();
-  shimasu.bit("core/bits");
-  shimasu.bit("shellbit");
-  shimasu.bit("argbit");
+  shimasu.bit("@surucode/suru-core/bits");
+  // shimasu.bit("shellbit");
+  // shimasu.bit("argbit");
 
-  const suruPath = fs.realpathSync(process.cwd() + "/suru.js");
+  const suruPath = realpathSync(cwd() + "/suru.js");
   console.log("Loaded tasks from: " + suruPath);
 
-  (__non_webpack_require__ || require)(suruPath);
+  require(suruPath);
 
   const argParser = new ArgumentParser({
     prog: `suru`,

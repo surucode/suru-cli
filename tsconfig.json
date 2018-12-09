@@ -1,13 +1,16 @@
 {
-    "compilerOptions": {
-      "baseUrl": "src",
-      "noImplicitAny": true,
-      "module": "commonjs",
-      "target": "es6",
-      "sourceMap": true,
-      "allowJs": true
-    },
-    "exclude": [
-      "node_modules"
-    ]
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "dist",
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es6",
+    "sourceMap": false,
+    "declaration": false
+  },
+  "exclude": [
+    "node_modules",
+    "suru.js",
+    "dist"
+  ]
 }
