@@ -1,6 +1,6 @@
 {
   "name": "@surucode/suru-cli",
-  "version": "0.0.0-pre-0.0.1",
+  "version": "0.0.0-pre-0.0.3",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -18,7 +18,9 @@
     "@types/node": "^10.12.10"
   },
   "dependencies": {
+    "@surucode/suru-argbit": "0.0.0-pre-0.0.1",
     "@surucode/suru-core": "0.0.0-pre-0.0.1",
+    "@surucode/suru-shellbit": "0.0.0-pre-0.0.1",
     "argparse": "^1.0.10"
   }
 }
