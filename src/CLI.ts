@@ -26,7 +26,7 @@ export function CLI() {
   argParser.addArgument("task");
 
   const args = argParser.parseArgs(process.argv.slice(2, 3));
-  const rTask = global.suru.getTask(args.task);
+  const rTask = global.suru.getTask(`::${args.task}`);
 
   if (rTask) {
     rTask.run(...process.argv.slice(3));

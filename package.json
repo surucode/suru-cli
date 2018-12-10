@@ -1,6 +1,6 @@
 {
   "name": "@surucode/suru-cli",
-  "version": "0.0.0-pre-0.0.3",
+  "version": "0.0.0-pre-0.0.4",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,6 @@
     "@types/argparse": "^1.0.35",
     "@types/node": "^10.12.10",
     "ts-loader": "^5.3.1",
-    "ts-node": "^7.0.1",
     "typescript": "^3.2.1"
   },
   "dependencies": {
