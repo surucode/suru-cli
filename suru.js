@@ -45,6 +45,11 @@ task(() => {
 
   // shell("npx", "webpack", shell.args);
   // shell("vim");
+  //   "main": "index.js",
+  // "bin": {
+  //  "suru": "index.js"
+  // },
+
 });
 
 task(() => {

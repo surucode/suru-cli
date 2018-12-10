@@ -9,7 +9,6 @@ export function CLI() {
   
   // register Suru
   const shimasu = Suru.register();
-  shimasu.bit("@surucode/suru-core/bits");
   shimasu.bit("@surucode/suru-shellbit");
   shimasu.bit("@surucode/suru-argbit");
 
