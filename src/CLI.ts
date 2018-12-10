@@ -9,8 +9,8 @@ export function CLI() {
   
   // register Suru
   const shimasu = Suru.register();
-  shimasu.bit("@surucode/suru-shellbit");
-  shimasu.bit("@surucode/suru-argbit");
+  shimasu.bit("shellbit");
+  shimasu.bit("argbit");
 
   const suruPath = realpathSync(cwd() + "/suru.js");
   console.log("Loaded tasks from: " + suruPath);
