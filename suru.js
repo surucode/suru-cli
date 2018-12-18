@@ -6,7 +6,7 @@ task(() => {
   name("build");
   desc("build suru with suru");
 
-  shell("npx", "tsc");
+  shell("npx", "tsc", "-d");
 
   run(() => {
     const package_json = fs.readFileSync(__dirname + "/package.json", {
@@ -24,19 +24,26 @@ task(() => {
       __dirname + "/dist/package.json",
       JSON.stringify(package, null, 3)
     );
-    fs.unlinkSync(
-      __dirname + "/dist/package-lock.json"
-    );
+
+    try {
+      fs.unlinkSync(__dirname + "/dist/package-lock.json");
+    } catch (err) {
+      console.error(err);
+    }
   });
 });
 
 task(() => {
   name("publish");
-  desc("publish suru-core");
+  desc("publish suru-cli");
+
+  shell("npm", "install");
 
   invoke("build")();
 
-  process.chdir(path.resolve("./dist", __dirname));
+  run(() => {
+    process.chdir(path.resolve("./dist", __dirname));
+  });
 
   shell("npm", "publish", "@surucode/suru-cli");
 });
