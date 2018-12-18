@@ -35,7 +35,7 @@ task(() => {
 
   process.chdir(path.resolve("./dist", __dirname));
 
-  shell("npm", "publish", "@surucode/suru-core");
+  shell("npm", "publish", "@surucode/suru-cli");
 });
 
 task(() => {
