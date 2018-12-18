@@ -24,6 +24,9 @@ task(() => {
       __dirname + "/dist/package.json",
       JSON.stringify(package, null, 3)
     );
+    fs.unlinkSync(
+      __dirname + "/dist/package-lock.json"
+    );
   });
 });
 
