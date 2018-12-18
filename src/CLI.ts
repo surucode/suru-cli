@@ -1,22 +1,19 @@
 import { Suru } from "@surucode/suru-core";
 import { ArgumentParser } from "argparse";
-
-import { realpathSync } from "fs";
-import { cwd } from "process"
+import { findSuruFile } from "./findSuruFile";
 
 export function CLI() {
-  console.log("loading suru");
-  
   // register Suru
   const shimasu = Suru.register();
   shimasu.bit("shellbit");
   shimasu.bit("argbit");
 
-  const suruPath = realpathSync(cwd() + "/suru.js");
-  console.log("Loaded tasks from: " + suruPath);
+  const surufile = findSuruFile();
 
-  require(suruPath);
-
+  if(surufile) {
+    require(surufile);
+  }
+ 
   const argParser = new ArgumentParser({
     prog: `suru`,
     version: "0.0.1",
